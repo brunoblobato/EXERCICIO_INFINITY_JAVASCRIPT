@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Fatorial e Fibonacci</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #e0e0e0;
+            text-align: center;
+        }
+        .button {
+            background-color: #c62828;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background-color: #b71c1c;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 50%;
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+    </style>   
+</head>
+<body>
+    <h1>Calculadora de Fatorial e Fibonacci</h1>
+    <div>
+        <input type="number" id="numero" placeholder="Digite um número inteiro positivo" min="0">
+        <button class="button" onclick="calcular()">Calcular</button>
+    </div>
+    <div class="result" id="resultado"></div>
+
+    <script>
+        function calcular() {
+            const numero = parseInt(document.getElementById('numero').value);
+            let resultado = document.getElementById('resultado');
+            
+            if (isNaN(numero) || numero < 0) {
+                resultado.innerHTML = "Por favor, insira um número inteiro positivo.";
+                return;
+            }
+
+            // Cálculo do fatorial
+            let fatorial = calcularFatorial(numero);
+            // Cálculo da sequência de Fibonacci
+            let fibonacci = calcularFibonacci(numero);
+
+            resultado.innerHTML = `
+                <p>Fatorial de ${numero}: ${fatorial}</p>
+                <p>Sequência de Fibonacci até ${numero}: ${fibonacci.join(', ')}</p>
+            `;
+        }
+
+        function calcularFatorial(n) {
+            if (n === 0 || n === 1) return 1;
+            return n * calcularFatorial(n - 1);
+        }
+
+        function calcularFibonacci(n) {
+            let fibo = [0, 1];
+            for (let i = 2; i <= n; i++) {
+                fibo[i] = fibo[i - 1] + fibo[i - 2];
+            }
+            return fibo.slice(0, n + 1);
+        }
+    </script>
+</body>
+</html>
