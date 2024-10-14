@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas Domésticas</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #e0e0e0;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+            display: block;
+            width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .button:hover {
+            background-color: #388e3c;
+        }
+
+        #taskInput {
+            display: block;
+            width: 80%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #333;
+            color: white;
+        }
+
+        #taskList {
+            margin-top: 20px;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            background-color: #333;
+            color: white;
+        }
+
+        #taskList li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 5px 0;
+        }
+
+        #taskList li button.remove {
+            background-color: #c62828;
+            border: none;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #taskList li button.remove:hover {
+            background-color: #b71c1c;
+        }
+
+        #taskList li button.update {
+            background-color: #2196F3;
+            border: none;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #taskList li button.update:hover {
+            background-color: #1976D2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gerenciador de Tarefas Domésticas</h1>
+
+    <input type="text" id="taskInput" placeholder="Adicione uma nova tarefa" />
+    <button class="button" onclick="addTask()">Adicionar Tarefa</button>
+
+    <div id="taskList">
+        <table>
+            <tbody id="taskListBody"></tbody>
+        </table>
+    </div>
+
+    <script>
+        function addTask() {
+            const taskInput = document.getElementById("taskInput");
+            const taskText = taskInput.value.trim();
+
+            if (taskText) {
+                const taskListBody = document.getElementById("taskListBody");
+
+                const listItem = document.createElement("tr");
+                listItem.innerHTML = `
+                    <td>
+                        <span class="task-text">${taskText}</span>
+                        <input type="text" class="edit-input" style="display:none;" placeholder="Atualize a tarefa" />
+                    </td>
+                    <td>
+                        <button class="update" onclick="updateTask(this)">Atualizar</button>
+                        <button class="remove" onclick="removeTask(this)">Remover</button>
+                    </td>
+                `;
+
+                taskListBody.appendChild(listItem); 
+                taskInput.value = '';
+            } else {
+                alert("Por favor, insira uma tarefa.");
+            }
+        }
+
+        function removeTask(button) {
+            const row = button.parentElement.parentElement;
+            row.remove();
+        }
+
+        function updateTask(button) {
+            const row = button.parentElement.parentElement;
+            const taskTextSpan = row.querySelector(".task-text");
+            const editInput = row.querySelector(".edit-input");
+
+            if (editInput.style.display === "none") {
+                // Mostrar o input de edição
+                editInput.style.display = "block";
+                editInput.value = taskTextSpan.textContent;
+                taskTextSpan.style.display = "none";
+                button.textContent = "Salvar";
+            } else {
+                
+                taskTextSpan.textContent = editInput.value;
+                editInput.style.display = "none";
+                taskTextSpan.style.display = "inline"; 
+                button.textContent = "Atualizar"; 
+            }
+        }
+    </script>
+</body>
+</html>
