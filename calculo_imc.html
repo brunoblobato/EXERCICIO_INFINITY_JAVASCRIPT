@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo do índice de massa corporal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #e0e0e0;
+        }
+    </style>   
+     
+    <h1>Calculadora de IMC</h1>
+    <button onclick="calcularIMC()">Calcular IMC</button>
+</body>
+<script>
+    function calcularIMC() {
+        // Solicita o nome, altura e peso do usuário
+        let nome = prompt("Por favor, digite seu nome:");
+        let alturaCm = parseFloat(prompt("Digite sua altura em centímetros:"));
+        let peso = parseFloat(prompt("Digite seu peso em kg:"));
+
+        // Converte a altura de centímetros para metros
+        let alturaM = alturaCm / 100;
+
+        // Calcula o IMC
+        let imc = peso / (alturaM * alturaM);
+
+        // Classificação do peso
+        let classificacao = "";
+        if (imc < 16) {
+            classificacao = "Baixo peso muito grave";
+        } else if (imc >= 16 && imc <= 16.99) {
+            classificacao = "Baixo peso grave";
+        } else if (imc >= 17 && imc <= 18.49) {
+            classificacao = "Baixo peso";
+        } else if (imc >= 18.50 && imc <= 24.99) {
+            classificacao = "Peso normal";
+        } else if (imc >= 25 && imc <= 29.99) {
+            classificacao = "Sobrepeso";
+        } else if (imc >= 30 && imc <= 34.99) {
+            classificacao = "Obesidade grau I";
+        } else if (imc >= 35 && imc <= 39.99) {
+            classificacao = "Obesidade grau II";
+        } else if (imc >= 40) {
+            classificacao = "Obesidade grau III";
+        }
+
+        // Exibe o resultado
+        alert(`Nome: ${nome}\nIMC: ${imc.toFixed(2)}\nClassificação: ${classificacao}`);
+    }
+</script>
+</html>
