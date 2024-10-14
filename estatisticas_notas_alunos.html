@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estatísticas das Notas dos Alunos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .button {
+            background-color: #c62828;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background-color: #b71c1c;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>   
+
+    <h1>Calculadora de Estatísticas das Notas dos Alunos</h1>
+    <button class="button" onclick="calcularEstatisticas()">Calcular Estatísticas</button>
+</body>
+
+<script>
+    function calcularEstatisticas() {
+        // Solicita o número total de estudantes
+        let numEstudantes = parseInt(prompt("Digite o número total de estudantes na turma:"));
+        let notas = [];
+        let somaNotas = 0;
+        let maiorNota = Number.NEGATIVE_INFINITY; // Inicializa com o menor valor possível
+        let menorNota = Number.POSITIVE_INFINITY; // Inicializa com o maior valor possível
+
+        // Coleta as notas usando um loop while
+        let i = 0;
+        while (i < numEstudantes) {
+            let nota = parseFloat(prompt(`Digite a nota do estudante ${i + 1}:`));
+            notas.push(nota); // Armazena a nota no array
+            somaNotas += nota; // Atualiza a soma das notas
+
+            // Atualiza a maior e menor nota
+            if (nota > maiorNota) {
+                maiorNota = nota;
+            }
+            if (nota < menorNota) {
+                menorNota = nota;
+            }
+            
+            i++;
+        }
+
+        // Calcula a média
+        let media = somaNotas / numEstudantes;
+
+        // Exibe os resultados
+        alert(`Média da turma: ${media.toFixed(2)}\nMaior nota: ${maiorNota}\nMenor nota: ${menorNota}`);
+    }
+</script>
+</html>
