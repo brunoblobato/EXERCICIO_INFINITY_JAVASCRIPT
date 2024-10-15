@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Gorjetas</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #e0e0e0;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        input[type="text"], input[type="number"], select {
+            padding: 10px;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 10px;
+            border: 2px solid #00c853;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #00c853;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+            margin-right: 5px;
+        }
+
+        button:hover {
+            background-color: #009624;
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora de Gorjetas</h1>
+    <div class="input-group">
+        <label for="clientName">Nome do Cliente:</label>
+        <input type="text" id="clientName" placeholder="Digite seu nome">
+    </div>
+    <div class="input-group">
+        <label for="billAmount">Valor Total da Conta (R$):</label>
+        <input type="text" id="billAmount" placeholder="Digite o valor da conta">
+    </div>
+    <div class="input-group">
+        <label for="serviceQuality">Qualidade do Serviço:</label>
+        <select id="serviceQuality">
+            <option value="Bom">Bom</option>
+            <option value="Regular">Regular</option>
+            <option value="Ruim">Ruim</option>
+        </select>
+    </div>
+    <div class="input-group">
+        <label for="attendantName">Escolha o Atendente:</label>
+        <select id="attendantName">
+            <option value="Augusto">Augusto</option>
+            <option value="Breno">Breno</option>
+            <option value="Carlos">Carlos</option>
+        </select>
+    </div>
+    <div class="input-group">
+        <label>Escolha a Gorjeta (%):</label>
+        <button onclick="calcularGorjeta(0)">0%</button>
+        <button onclick="calcularGorjeta(5)">5%</button>
+        <button onclick="calcularGorjeta(10)">10%</button>
+    </div>
+    <div id="result"></div>
+
+    <script>
+        const calcularGorjeta = (percentual) => {
+            const nomeCliente = document.getElementById("clientName").value;
+            const valorConta = parseFloat(
+                document.getElementById("billAmount").value.replace('R$', '').replace(',', '.').trim()
+            );
+            const qualidadeServico = document.getElementById("serviceQuality").value;
+            const nomeAtendente = document.getElementById("attendantName").value;
+
+            if (isNaN(valorConta) || valorConta <= 0) {
+                document.getElementById("result").innerHTML = "Por favor, insira um valor válido para a conta.";
+                return;
+            }
+
+            const gorjeta = valorConta * (percentual / 100);
+            const totalAPagar = valorConta + gorjeta;
+            const resultado = `
+                <h3>Resultado</h3>
+                <p>Nome do Cliente: ${nomeCliente}</p>
+                <p>Qualidade do Serviço: ${qualidadeServico}</p>
+                <p>Gorjeta: R$ ${gorjeta.toFixed(2)}</p>
+                <p>Atendente: ${nomeAtendente}</p
+                <p>Valor da conta: R$ ${valorConta.toFixed(2)}</p    
+                <p>Total a Pagar (Conta + Gorjeta): R$ ${totalAPagar.toFixed(2)}</p>
+            `;
+            document.getElementById("result").innerHTML = resultado;
+        }
+
+        document.getElementById('billAmount').addEventListener('input', function (e) {
+            let valor = e.target.value.replace(/\D/g, '');
+            valor = (valor / 100).toFixed(2) + '';
+            valor = valor.replace(".", ",");
+            e.target.value = 'R$ ' + valor;
+        });
+    </script>
+</body>
+</html>
