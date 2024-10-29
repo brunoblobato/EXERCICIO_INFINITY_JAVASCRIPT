@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Interativo</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #e0e0e0;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .quiz-container {
+            margin-top: 20px;
+        }
+
+        .question {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #087500;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin: 10px;
+        }
+
+        button:hover {
+            background-color: #009624;
+        }
+
+        .feedback {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quiz Interativo</h1>
+    <div class="quiz-container">
+        <div class="question" id="question"></div>
+        <div id="options"></div>
+        <div class="feedback hidden" id="feedback"></div>
+        <button class="hidden" id="reloadBtn" onclick="reloadQuiz()">Próxima Pergunta</button>
+        <div class="hidden" id="scoreContainer">
+            <div class="feedback" id="scoreFeedback"></div>
+            <button id="restartBtn" onclick="restartQuiz()" class="hidden">Fazer Novamente</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Quem é o autor de 'Dom Casmurro'?",
+                options: ["Machado de Assis", "José de Alencar", "Graciliano Ramos", "Jorge Amado"],
+                answer: 0 // Índice da resposta correta
+            },
+            {
+                question: "Qual é a obra mais famosa de Jorge Amado?",
+                options: ["Capitães da Areia", "O Guarani", "Memórias Póstumas de Brás Cubas", "Iracema"],
+                answer: 0
+            },
+            {
+                question: "Qual filósofo é conhecido por sua obra 'A República'?",
+                options: ["Platão", "Aristóteles", "Sócrates", "Descartes"],
+                answer: 0
+            },
+            {
+                question: "Quem escreveu 'A Moreninha'?",
+                options: ["Joaquim Manuel de Macedo", "José de Alencar", "Machado de Assis", "Mário de Andrade"],
+                answer: 0
+            },
+            {
+                question: "Qual é a dança típica da Bahia?",
+                options: ["Samba", "Forró", "Frevo", "Axé"],
+                answer: 3
+            },
+            {
+                question: "Qual é o principal gênero musical do Nordeste do Brasil?",
+                options: ["Sertanejo", "Samba", "MPB", "Baião"],
+                answer: 3
+            }
+        ];
+
+        let currentQuestionIndex;
+        let score = 0;
+        let totalQuestions = questions.length;
+
+        const loadQuestion = () => {
+            currentQuestionIndex = Math.floor(Math.random() * questions.length);
+            const currentQuestion = questions[currentQuestionIndex];
+            document.getElementById('question').innerText = currentQuestion.question;
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+
+            currentQuestion.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.innerText = option;
+                button.onclick = () => checkAnswer(index);
+                optionsContainer.appendChild(button);
+            });
+
+            document.getElementById('feedback').classList.add('hidden');
+            document.getElementById('reloadBtn').classList.add('hidden');
+        }
+
+        const checkAnswer = (selectedOption) => {
+            const currentQuestion = questions[currentQuestionIndex];
+            const feedback = document.getElementById('feedback');
+
+            if (selectedOption === currentQuestion.answer) {
+                feedback.innerText = "Acertou!!!";
+                score++; 
+            } else {
+                feedback.innerText = `Errou! A resposta correta é: ${currentQuestion.options[currentQuestion.answer]}`;
+            }
+
+            feedback.classList.remove('hidden');
+            document.getElementById('reloadBtn').classList.remove('hidden');
+
+            questions.splice(currentQuestionIndex, 1); 
+            if (questions.length === 0) {
+                showScore();
+            } else {
+                const optionsContainer = document.getElementById('options');
+                optionsContainer.innerHTML = ''; 
+            }
+        }
+
+        const showScore = () => {
+            document.getElementById('question').classList.add('hidden');
+            document.getElementById('options').classList.add('hidden');
+            document.getElementById('feedback').classList.add('hidden');
+            document.getElementById('reloadBtn').classList.add('hidden');
+            document.getElementById('scoreContainer').classList.remove('hidden');
+
+            const scoreFeedback = document.getElementById('scoreFeedback');
+            scoreFeedback.innerText = `Sua pontuação final é: ${score} de ${totalQuestions}`;
+            document.getElementById('restartBtn').classList.remove('hidden');
+        }
+
+        const reloadQuiz = () => {
+            loadQuestion();
+        }
+
+        const restartQuiz = () => {
+            score = 0; 
+            questions.push(
+                {
+                    question: "Quem é o autor de 'Dom Casmurro'?",
+                    options: ["Machado de Assis", "José de Alencar", "Graciliano Ramos", "Jorge Amado"],
+                    answer: 0 
+                },
+                {
+                    question: "Qual é a obra mais famosa de Jorge Amado?",
+                    options: ["Capitães da Areia", "O Guarani", "Memórias Póstumas de Brás Cubas", "Iracema"],
+                    answer: 0
+                },
+                {
+                    question: "Qual filósofo é conhecido por sua obra 'A República'?",
+                    options: ["Platão", "Aristóteles", "Sócrates", "Descartes"],
+                    answer: 0
+                },
+                {
+                    question: "Quem escreveu 'A Moreninha'?",
+                    options: ["Joaquim Manuel de Macedo", "José de Alencar", "Machado de Assis", "Mário de Andrade"],
+                    answer: 0
+                },
+                {
+                    question: "Qual é a dança típica da Bahia?",
+                    options: ["Samba", "Forró", "Frevo", "Axé"],
+                    answer: 3
+                },
+                {
+                    question: "Qual é o principal gênero musical do Nordeste do Brasil?",
+                    options: ["Sertanejo", "Samba", "MPB", "Baião"],
+                    answer: 3
+                }
+            ); 
+            document.getElementById('scoreContainer').classList.add('hidden');
+            document.getElementById('question').classList.remove('hidden');
+            document.getElementById('options').classList.remove('hidden');
+            loadQuestion();
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
