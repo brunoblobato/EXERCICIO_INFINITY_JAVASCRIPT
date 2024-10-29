@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tarefas</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #e0e0e0;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            max-width: 300px;
+            border: 2px solid #00c853;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #00c853;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-left: 10px;
+        }
+
+        button:hover {
+            background-color: #009624;
+        }
+
+        .task-list {
+            margin-top: 20px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .task {
+            background-color: #767676;
+            padding: 10px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 2px;
+            box-sizing: border-box;
+        }
+
+        .task.completed {
+            text-decoration: line-through;
+            color: #aaa;
+        }
+
+        .task button {
+            background: none;
+            border: none;
+            color: rgb(165, 2, 2);
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .task input[type="checkbox"] {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Tarefas</h1>
+
+    <div class="input-group">
+        <input type="text" id="taskInput" placeholder="Digite sua tarefa">
+        <button onclick="adicionarTarefa()">Adicionar Tarefa</button>
+    </div>
+
+    <ul class="task-list" id="taskList"></ul>
+
+    <script>
+        const adicionarTarefa = () => {
+            const tarefaTexto = document.getElementById('taskInput').value;
+
+            if (tarefaTexto.trim() === '') {
+                alert("Por favor, insira uma tarefa.");
+                return;
+            }
+
+            const tarefaLista = document.getElementById('taskList');
+            const tarefaItem = document.createElement('li');
+            tarefaItem.classList.add('task');
+
+            tarefaItem.innerHTML = `
+                <input type="checkbox" onclick="marcarConcluida(this)">
+                <span>${tarefaTexto}</span>
+                <button onclick="removerTarefa(this)">x</button>
+            `;
+
+            tarefaLista.appendChild(tarefaItem);
+            document.getElementById('taskInput').value = '';
+        }
+
+        const removerTarefa = (button) => {
+            const tarefaItem = button.parentElement;
+            tarefaItem.remove();
+        }
+
+        const marcarConcluida = (checkbox) => {
+            const tarefaItem = checkbox.parentElement;
+            tarefaItem.classList.toggle('completed', checkbox.checked);
+        }
+    </script>
+</body>
+</html>
