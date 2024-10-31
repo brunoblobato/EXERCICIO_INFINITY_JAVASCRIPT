@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Caixa Eletrônico</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .container {
+            width: 350px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+        label, select, input, button, p {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        input, select, button {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            appearance: none; 
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"%3E%3Cpath fill="gray" d="M7 10l5 5 5-5H7z"/%3E%3C/svg%3E');
+            background-position: calc(100% - 15px) center; 
+            background-color: white;
+        }
+        input[type="number"] {
+            width: 94%; 
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        label[for="valor"] {
+            margin-top: 10px;
+            display: inline-block;
+        }
+        button {
+            background-color: #28a745;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        p {
+            font-size: 16px;
+            color: #555;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Simulador de Caixa Eletrônico</h1>
+        
+        <label for="operacao">Selecione a operação:</label>
+        <select id="operacao">
+            <option value="saldo">Consultar Saldo</option>
+            <option value="sacar">Sacar</option>
+            <option value="depositar">Depositar</option>
+        </select>
+
+        <label for="valor">Digite o valor:</label>
+        <input type="number" id="valor" placeholder="Ex.: 100" min="0" step="0.01">
+
+        <button onclick="realizarOperacao()">Realizar</button>
+        
+        <p id="resultado"></p>
+    </div>
+
+    <script>
+        let saldo = 1000.00;
+
+        function realizarOperacao() {
+            const operacao = document.getElementById('operacao').value;
+            const valorInput = document.getElementById('valor').value;
+            const resultado = document.getElementById('resultado');
+            const valor = parseFloat(valorInput);
+
+            if ((operacao === 'sacar' || operacao === 'depositar') && (isNaN(valor) || valor <= 0)) {
+                resultado.textContent = "Por favor, insira um valor válido.";
+                resultado.style.color = 'red';
+                return;
+            }
+
+            if (operacao === 'saldo') {
+                resultado.textContent = `Seu saldo atual é de R$ ${saldo.toFixed(2)}.`;
+                resultado.style.color = 'black';
+
+            } else if (operacao === 'sacar') {
+                if (valor > saldo) {
+                    resultado.textContent = "Saldo insuficiente para realizar o saque.";
+                    resultado.style.color = 'red';
+                } else {
+                    saldo -= valor;
+                    resultado.textContent = `Saque de R$ ${valor.toFixed(2)} realizado com sucesso. Saldo atual: R$ ${saldo.toFixed(2)}.`;
+                    resultado.style.color = 'green';
+                }
+
+            } else if (operacao === 'depositar') {
+                saldo += valor;
+                resultado.textContent = `Depósito de R$ ${valor.toFixed(2)} realizado com sucesso. Saldo atual: R$ ${saldo.toFixed(2)}.`;
+                resultado.style.color = 'green';
+            }
+        }
+    </script>
+
+</body>
+</html>
